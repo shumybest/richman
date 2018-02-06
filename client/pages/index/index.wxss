@@ -1,0 +1,35 @@
+page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.uploader {
+    margin-top: 40rpx;
+    height: 140rpx;
+    width: 100%;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-left: none;
+    border-right: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: all 300ms ease;
+    padding: 0 0 0 40rpx;
+    box-sizing: border-box;
+}
+
+.uploader-text {
+    width: 100%;
+    line-height: 52px;
+    font-size: 34rpx;
+    color: #007AFF;
+}
+
+.userinfo-avatar {
+    width: 150rpx;
+    height: 150rpx;
+    margin: 20rpx;
+    border-radius: 50%;
+}

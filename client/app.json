@@ -1,0 +1,72 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/my/my",
+        "pages/addCgi/addCgi",
+
+
+        
+        "pages/example/index",
+        "pages/example/button/button",
+        "pages/example/list/list",
+        "pages/example/input/input",
+        "pages/example/slider/slider",
+        "pages/example/uploader/uploader",
+        "pages/example/article/article",
+        "pages/example/badge/badge",
+        "pages/example/flex/flex",
+        "pages/example/footer/footer",
+        "pages/example/gallery/gallery",
+        "pages/example/grid/grid",
+        "pages/example/icons/icons",
+        "pages/example/loadmore/loadmore",
+        "pages/example/panel/panel",
+        "pages/example/preview/preview",
+        "pages/example/progress/progress",
+        "pages/example/actionsheet/actionsheet",
+        "pages/example/dialog/dialog",
+        "pages/example/msg/msg",
+        "pages/example/msg/msg_success",
+        "pages/example/msg/msg_fail",
+        "pages/example/picker/picker",
+        "pages/example/toast/toast",
+        "pages/example/navbar/navbar",
+        "pages/example/tabbar/tabbar",
+        "pages/example/searchbar/searchbar"
+    ],
+    "window": {
+        "backgroundColor": "#F6F6F6",
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#EA363B",
+        "navigationBarTitleText": "我很有钱",
+        "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+        "backgroundColor": "#FFFFFF",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "nres/icon_component.png",
+                "selectedIconPath": "nres/icon_component_HL.png"
+            },
+            {
+                "pagePath": "pages/my/my",
+                "text": "壕排行",
+                "iconPath": "nres/icon_API.png",
+                "selectedIconPath": "nres/icon_API_HL.png"
+            },            
+            {
+                "pagePath": "pages/my/my",
+                "text": "我的",
+                "iconPath": "nres/icon_API.png",
+                "selectedIconPath": "nres/icon_API_HL.png"
+            }
+        ]
+    },
+    "networkTimeout": {
+        "request": 10000,
+        "downloadFile": 10000
+    },
+    "debug": true
+}

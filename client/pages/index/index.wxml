@@ -1,0 +1,21 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+    <view class="page__hd" style="text-align: center">
+        <image class="userinfo-avatar"
+            src="{{logged ? userInfo.avatarUrl : '../../nres/user-unlogin.png'}}"
+            background-size="cover"></image>
+        <view class="page__title">老板我今天想请客</view>
+        <view class="page__desc">输入要请客人的数量，人齐后开奖</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入多少个人" bindchange="attendeeChange"/>
+                </view>
+            </view>
+        </view>
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="warn" bindtap="initialTreating">我要撒币</button>
+        </view>
+    </view>
+</view>
