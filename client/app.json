@@ -2,7 +2,7 @@
     "pages": [
         "pages/index/index",
         "pages/my/my",
-        "pages/addCgi/addCgi",
+        "pages/detail/detail",
 
 
         

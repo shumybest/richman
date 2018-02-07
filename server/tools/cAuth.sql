@@ -42,7 +42,11 @@ CREATE TABLE IF NOT EXISTS `treating` (
   `attendee_Info` VARCHAR(2048) NOT NULL,
   `status` INT NOT NULL,
   `method_id` INT NOT NULL,
-  PRIMARY KEY (`tid`)
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`tid`),
+  KEY `tid` (`tid`) USING BTREE,
+  KEY `init_uid` (`init_uid`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='招待管理';
 
 DROP TABLE IF EXISTS `methods`;
@@ -50,7 +54,8 @@ CREATE TABLE IF NOT EXISTS `methods` (
   `mid` INT NOT NULL AUTO_INCREMENT,
   `cost` INT NOT NULL,
   `msg` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`mid`)
+  PRIMARY KEY (`mid`),
+  KEY `mid` (`mid`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='招待方法';
 
 SET FOREIGN_KEY_CHECKS = 1;

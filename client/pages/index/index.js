@@ -13,10 +13,10 @@ Page({
         var appInstance = getApp()
 
         if (!appInstance.logged) {
-
             util.showBusy('正在登录')
             var that = this
 
+            // TODO extract common function
             // 调用登录接口
             qcloud.login({
                 success(result) {
@@ -58,6 +58,7 @@ Page({
             })
         }
     },
+
     attendeeChange: function(e) {
         this.setData({
             attendee: e.detail.value
@@ -75,7 +76,7 @@ Page({
         util.showBusy('请求中...')
         var that = this
         qcloud.request({
-            url: `${config.service.host}/weapp/initTreating`,
+            url: config.service.treatingUrl,
             login: true,
             method: 'POST',
             data: {'attendee': that.data.attendee},

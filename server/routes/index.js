@@ -33,6 +33,7 @@ router.get('/message', controllers.message.get)
 router.post('/message', controllers.message.post)
 
 //demo
-router.post('/initTreating', validationMiddleware, controllers.initTreating)
+router.post('/treating', validationMiddleware, controllers.treating.init)
+router.get('/treating', validationMiddleware, controllers.treating.query)
 
 module.exports = router
