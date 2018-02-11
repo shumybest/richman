@@ -1,7 +1,9 @@
-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+.page__hd {
+    padding-left: 10rpx;
+}
+
+.page__title {
+    font-size: 14px;
 }
 
 .uploader {

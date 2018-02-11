@@ -2,48 +2,52 @@
 var qcloud = require('../../vendor/index')
 var config = require('../../config')
 var util = require('../../utils/util.js')
+var apis = require('../../apis/apis.js')
 
 Page({
     data: {
-        requestResult: '',
-        canIUseClipboard: wx.canIUse('setClipboardData')
+        tid: 0,
+        logged: false,
+        userInfo: {},
+        detail: {},
     },
 
-    testCgi: function () {
-        util.showBusy('请求中...')
-        var that = this
-        qcloud.request({
-            url: `${config.service.host}/weapp/demo`,
-            login: false,
-            success (result) {
-                util.showSuccess('请求成功完成')
-                that.setData({
-                    requestResult: JSON.stringify(result.data)
+    onLoad: function (options) {
+        apis.login(this)
+
+        this.setData({
+            tid: options.tid
+        })
+
+        apis.querySingleTreating(this, options.tid, (result) => {
+            result.data.data[0].attendee_Info =
+                JSON.parse(result.data.data[0].attendee_Info)
+
+            this.setData({
+                detail: result.data.data[0]
+            })
+        })
+    },
+
+    attend: function() {
+        apis.attendTreating(this, {
+            tid: this.data.tid,
+            userInfo: this.data.userInfo
+        })
+    },
+
+    onShareAppMessage: function(res) {
+        return {
+            title: '转发的人都长的帅',
+            path: '/pages/detail/detail?tid=' + this.data.tid,
+            success: function(res) {
+                wx.showShareMenu({
+                    withShareTicket: true
                 })
             },
-            fail (error) {
-                util.showModel('请求失败', error);
-                console.log('request fail', error);
+            fail: function(res) {
+                // 转发失败
             }
-        })
-    },
-
-    copyCode: function (e) {
-        var codeId = e.target.dataset.codeId
-        wx.setClipboardData({
-            data: code[codeId - 1],
-            success: function () {
-                util.showSuccess('复制成功')
-            }
-        })
+        }
     }
 })
-
-var code = [
-`router.get('/demo', controllers.demo)`,
-`module.exports = ctx => {
-    ctx.state.data = {
-        msg: 'Hello World'
-    }
-}`
-]

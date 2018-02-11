@@ -12,14 +12,16 @@
     <view class="weui-panel">
         <view class="weui-panel__hd">我的撒币们</view>
         <view class="weui-panel__bd">
-            <view class="weui-media-box weui-media-box_text" wx:for="{{ongoingTreating}}" wx:key="tid" bindtap="detail" data-tid="{{item.tid}}">
-                <view class="weui-media-box__title weui-media-box__title_in-text">已有{{item.attended}}人来抢钱了</view>
-                <view class="weui-media-box__desc">{{item.create_time}}</view>
-                <view class="weui-media-box__info">
-                    <view class="weui-media-box__info__meta">{{item.status}}</view>
-                    <!-- <view class="weui-media-box__info__meta">{{item.create_time}}</view> -->
-                    <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">总需{{item.attendee_number}}人</view>
-                </view>
+            <view class="weui-media-box weui-media-box_text" wx:for="{{treating}}" wx:key="tid">
+                <navigator url="../detail/detail?tid={{item.tid}}" open-type="navigate">
+                    <view class="weui-media-box__title weui-media-box__title_in-text">已有{{item.attendee_number}}人来抢钱了</view>
+                    <view class="weui-media-box__desc">{{item.create_time}}</view>
+                    <view class="weui-media-box__info">
+                        <view class="weui-media-box__info__meta">{{item.status}}</view>
+                        <!-- <view class="weui-media-box__info__meta">{{item.create_time}}</view> -->
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">总需{{item.attendee_Info.length}}人</view>
+                    </view>
+                </navigator>
             </view>
         </view>
     </view>
