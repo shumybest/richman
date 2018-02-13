@@ -16,9 +16,9 @@ Page({
     },
 
     onShow: function() {
-        apis.queryTreating(this, (res) => {
+        apis.queryTreating(this, {}, (data) => {
             this.setData({
-                treating: res.data.data
+                treating: data
             })
         })
     },

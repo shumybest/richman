@@ -10,6 +10,7 @@ Page({
         logged: false,
         userInfo: {},
         detail: {},
+        attendeeArray: []
     },
 
     onLoad: function (options) {
@@ -19,12 +20,15 @@ Page({
             tid: options.tid
         })
 
-        apis.querySingleTreating(this, options.tid, (result) => {
-            result.data.data[0].attendee_Info =
-                JSON.parse(result.data.data[0].attendee_Info)
+        apis.querySingleTreating(this, options.tid, (data) => {
+            data.attendee_Info = JSON.parse(data.attendee_Info)
+
+            for (let i = 0; i < data.attendee_number - data.attended; i++)
+                data.attendee_Info.push({})
 
             this.setData({
-                detail: result.data.data[0]
+                detail: data,
+                attendeeArray: data.attendee_Info
             })
         })
     },
@@ -33,6 +37,16 @@ Page({
         apis.attendTreating(this, {
             tid: this.data.tid,
             userInfo: this.data.userInfo
+        }, (data) => {
+            data.attendee_Info = JSON.parse(data.attendee_Info)
+            
+            for (let i = 0; i < data.attendee_number - data.attended; i++)
+                data.attendee_Info.push({})
+
+            this.setData({
+                detail: data,
+                attendeeArray: data.attendee_Info
+            })
         })
     },
 

@@ -8,7 +8,7 @@
         <view class="weui-flex__item">
             <view wx:if="{{detail.status == 1}}">
                 <view class="page__title" >赶紧找小伙伴</view>
-                <view class="page__desc">还差{{detail.attendee_Info.length - detail.attendee_number}}个小伙伴，集齐小伙伴召唤神龙开奖</view>
+                <view class="page__desc">还差{{detail.attendee_number - detail.attended}}个小伙伴，集齐小伙伴召唤神龙开奖</view>
             </view>
             <view wx:else>
                 <view class="page__title">已经结束啦</view>
@@ -17,12 +17,16 @@
         </view>
     </view>
     <view class="weui-flex">
-        <view class="weui-flex__item" wx:for="{{detail.attendee_Info}}">
-            <view class="placeholder" bindtap="attend">+</view>
+        <view class="weui-flex__item" wx:for="{{attendeeArray}}" wx:key="openId">
+            <image wx:if="{{item.avatarUrl}}" 
+                class="userinfo-avatar"
+                src="{{item.avatarUrl ? item.avatarUrl : '../../nres/user-unlogin.png'}}"
+                background-size="cover"></image>
+            <view wx:else class="placeholder" bindtap="attend">+</view>
         </view>
     </view>
     
-    <view class="weui-btn-area">
+    <view class="weui-btn-area" wx:if="{{detail.status == 1}}">
         <button class="weui-btn" open-type="share" type="warn">召唤小伙伴</button>
     </view>
 </view>

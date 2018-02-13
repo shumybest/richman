@@ -35,3 +35,7 @@
     margin: 20rpx;
     border-radius: 50%;
 }
+
+.padding-text {
+    padding: 40rpx;
+}

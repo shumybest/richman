@@ -21,20 +21,21 @@ function mapTreatingData(data) {
     return data
 }
 
-var queryTreating = function (obj, success, fail) {
+var queryTreating = function (obj, data, success, fail) {
     util.showBusy('请求中...')
     var options = {
         url: config.service.treatingUrl,
         login: true,
+        data: data,
         success(result) {
             wx.hideToast()
-            console.log('request success',
+            console.log('queryTreating success',
                 mapTreatingData(result.data.data))
-            if(success) success(result)
+            if (success) success(result.data.data)
         },
         fail(error) {
             util.showModel('请求失败', error);
-            console.log('request fail', error);
+            console.log('queryTreating fail', error);
             if(fail) fail(error)
         }
     }
@@ -63,7 +64,7 @@ var login = function(obj, success, fail) {
                 })
                 appInstance.userInfo = result.data.data
                 appInstance.logged = true
-                success(result)
+                success(result.data.data)
             } else {
                 // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
                 qcloud.request({
@@ -78,12 +79,12 @@ var login = function(obj, success, fail) {
                             userInfo: result.data.data,
                             logged: true
                         })
-                        if(success) success(result)
+                        if (success) success(result.data.data)
                     },
 
                     fail(error) {
                         util.showModel('请求失败', error)
-                        console.log('request fail', error)
+                        console.log('login fail', error)
                         if(fail) fail(error)
                     }
                 })
@@ -99,13 +100,6 @@ var login = function(obj, success, fail) {
 }
 
 var createTreating = function(obj, data) {
-    console.log(obj.data)
-
-    if (obj.data.attendee < 0 || obj.data.attendee > 999) {
-        util.showModel('请输入合理数字', '亲，你真的有这么多朋友吗？');
-        return
-    }
-
     util.showBusy('请求中...')
     qcloud.request({
         url: config.service.treatingUrl,
@@ -114,11 +108,11 @@ var createTreating = function(obj, data) {
         data: data,
         success(result) {
             wx.hideToast()
-            console.log(JSON.stringify(result.data))
+            console.log('createTreating success', JSON.stringify(result.data))
         },
         fail(error) {
             util.showModel('请求失败', error);
-            console.log('request fail', error);
+            console.log('createTreating fail', error);
         }
     })
 }
@@ -130,12 +124,12 @@ var querySingleTreating = function(obj, data, success, fail) {
         login: true,
         success(result) {
             wx.hideToast()
-            console.log('request success', result.data.data)
-            if (success) success(result)
+            console.log('querySingleTreating success', result.data.data)
+            if (success) success(result.data.data)
         },
         fail(error) {
             util.showModel('请求失败', error);
-            console.log('request fail', error);
+            console.log('querySingleTreating fail', error);
             if(fail) fail(error)
         }
     }
@@ -145,18 +139,18 @@ var querySingleTreating = function(obj, data, success, fail) {
 var attendTreating = function(obj, data, success, fail) {
     util.showBusy('请求中...')
     var options = {
-        url: config.service.treatingUrl + '/' + data.tid,
+        url: config.service.treatingUrl + '/attend/' + data.tid,
         method: 'POST',
         login: true,
-        data: data,
+        data: data.userInfo,
         success(result) {
             wx.hideToast()
-            console.log('request success', result.data.data)
-            if (success) success(result)
+            console.log('attendTreating success', result.data.data)
+            if (success) success(result.data.data)
         },
         fail(error) {
             util.showModel('请求失败', error);
-            console.log('request fail', error);
+            console.log('attendTreating fail', error);
             if (fail) fail(error)
         }
     }

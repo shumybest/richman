@@ -9,14 +9,16 @@ Page({
         userInfo: {},
         logged: false,
         treating: {}
+    }, 
+    
+    onLoad: function () {
+        apis.login(this)
     },
 
-    onReady: function() {
-        apis.login(this)
-
-        apis.queryTreating(this, (res) => {
+    onShow: function() {
+        apis.queryTreating(this, {status: 1}, (data) => {
             this.setData({
-                treating: res.data.data
+                treating: data
             })
         })
     },
@@ -28,9 +30,14 @@ Page({
     },
 
     initialTreating: function() {
+        if (this.data.attendee < 0 || this.data.attendee > 29) {
+            util.showModel('请输入合理数字', '亲，你真的有这么多朋友吗？');
+            return
+        }
+
         apis.createTreating(
             this,
-            {'attendee': this.data.attendee}
+            {'attendee': parseInt(this.data.attendee)}
         )
     }
 })

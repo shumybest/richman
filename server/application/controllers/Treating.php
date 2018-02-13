@@ -1,66 +1,62 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use \QCloud_WeApp_SDK\Auth\LoginService as LoginService;
-use QCloud_WeApp_SDK\Constants as Constants;
-use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+require APPPATH . 'models/TreatingDAO.php';
 
 class Treating extends CI_Controller {
     public function index() {
-        $result = LoginService::check();
-
-        if ($result['loginState'] === Constants::S_AUTH) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//                $rows = DB::insert('treating', [
-//                    'init_uid' => $result['userinfo']['openId'],
-//                    'attendee_number' => $_POST['attendee'],
-//                    'attended' => 0,
-//                    'attendee_Info' => [],
-//                    'status' => 1
-//                ]);
-//                if($rows > 0) {
-                    $this->json([
-                        'code' => 200,
-                        'data' => []
-                    ]);
-//                } else {
-//                    $this->json([
-//                        'code' => -1,
-//                        'data' => []
-//                    ]);
-//                }
-            } else {
-                $rows = DB::select('treating', ['*'], ['init_uid' => $result['userinfo']['openId']]);
-                $this->json([
-                    'code' => 200,
-                    'data' => $rows
-                ]);
-            }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = json_decode(file_get_contents("php://input"));
+            TreatingDAO::create($this->userInfo['userinfo']['openId'], $data->{'attendee'});
+            $this->success('OK');
         } else {
-            $this->json([
-                'code' => -1,
-                'data' => []
-            ]);
+            $status = $this->input->get('status');
+            if(isset($status))
+                $this->success(TreatingDAO::findAllByOpenIdAndStatus($this->userInfo['userinfo']['openId'], $status));
+            else
+                $this->success(TreatingDAO::findAllByOpenId($this->userInfo['userinfo']['openId']));
         }
     }
 
     public function detail($tid) {
-        $result = LoginService::check();
+        $this->success(TreatingDAO::findOneByTid($tid));
+    }
 
-        if ($result['loginState'] === Constants::S_AUTH) {
-            $rows = DB::select('treating', ['*'], [
-                'init_uid' => $result['userinfo']['openId'],
-                'tid' => $tid
-            ]);
-            $this->json([
-                'code' => 200,
-                'data' => $rows
-            ]);
-        } else {
-            $this->json([
-                'code' => -1,
-                'data' => []
-            ]);
+    public function attend($tid) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = json_decode(file_get_contents("php://input"));
+            $row = TreatingDAO::findOneByTid($tid);
+
+            if (isset($row)) {
+                $row->{'attended'} += 1;
+
+                if($row->{'attended'} == $row->{'attendee_number'})
+                    $row->{'status'} = 2;
+
+                $attendee_Info = json_decode($row->{'attendee_Info'});
+                array_push($attendee_Info, $data);
+                $row->{'attendee_Info'} = json_encode($attendee_Info);
+
+                TreatingDAO::updateByTid($tid,
+                    ['attended' => $row->{'attended'},
+                     'attendee_Info' => $row->{'attendee_Info'},
+                     'status' => $row->{'status'}]);
+
+                $this->success($row);
+                return;
+            }
         }
+
+        $this->fail();
+    }
+
+    private function success($data) {
+        $this->json(['code' => 200,
+                     'data' => $data]);
+    }
+
+    private function fail() {
+        $this->json(['code' => -1,
+                     'data' => '']);
     }
 }
