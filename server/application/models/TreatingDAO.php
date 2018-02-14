@@ -7,6 +7,9 @@ use QCloud_WeApp_SDK\Mysql\Mysql as DB;
  * Date: 2018/2/12
  * Time: 下午3:09
  */
+
+require_once APPPATH . 'helpers/MyConstants.php';
+
 class TreatingDAO {
     public static function create($openId, $attendee) {
         DB::insert('treating',
@@ -14,7 +17,7 @@ class TreatingDAO {
              'attendee_number' => $attendee,
              'attended' => 0,
              'attendee_Info' => json_encode([]),
-             'status' => 1]);
+             'status' => MyConstants::T_ONGOING]);
     }
 
     public static function findAllByOpenId($openId) {
@@ -22,14 +25,14 @@ class TreatingDAO {
     }
 
     public static function findAllByOpenIdAndStatus($openId, $status) {
-        return $rows = DB::select('treating', ['*'], [
+        return DB::select('treating', ['*'], [
             'init_uid' => $openId,
             'status' => $status
         ]);
     }
 
     public static function findOneByTid($tid) {
-        return  DB::row('treating', ['*'], ['tid' => $tid]);
+        return DB::row('treating', ['*'], ['tid' => $tid]);
     }
 
     public static function updateByTid($tid, $updates) {

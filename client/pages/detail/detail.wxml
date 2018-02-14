@@ -29,4 +29,7 @@
     <view class="weui-btn-area" wx:if="{{detail.status == 1}}">
         <button class="weui-btn" open-type="share" type="warn">召唤小伙伴</button>
     </view>
+        <view class="weui-btn-area" wx:else>
+        <button class="weui-btn" open-type="share" type="warn">召唤小伙伴</button>
+    </view>
 </view>

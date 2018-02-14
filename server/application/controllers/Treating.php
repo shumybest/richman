@@ -1,7 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . 'models/TreatingDAO.php';
+require_once APPPATH . 'models/TreatingDAO.php';
+require_once APPPATH . 'business/TreatingMethodHandler.php';
+require_once APPPATH . 'helpers/MyConstants.php';
 
 class Treating extends CI_Controller {
     public function index() {
@@ -29,18 +31,24 @@ class Treating extends CI_Controller {
 
             if (isset($row)) {
                 $row->{'attended'} += 1;
-
-                if($row->{'attended'} == $row->{'attendee_number'})
-                    $row->{'status'} = 2;
-
                 $attendee_Info = json_decode($row->{'attendee_Info'});
                 array_push($attendee_Info, $data);
-                $row->{'attendee_Info'} = json_encode($attendee_Info);
 
-                TreatingDAO::updateByTid($tid,
-                    ['attended' => $row->{'attended'},
-                     'attendee_Info' => $row->{'attendee_Info'},
-                     'status' => $row->{'status'}]);
+                if($row->{'attended'} == $row->{'attendee_number'}) {
+                    $method = TreatingMethodHandler::getRandomMethod();
+
+                    TreatingDAO::updateByTid($tid,
+                        ['attended' => $row->{'attended'},
+                         'attendee_Info' => json_encode($attendee_Info),
+                         'status' => MyConstants::T_END,
+                         'method_msg' => $method->{'msg'},
+                         'method_cost' => $method->{'cost'}]);
+                } else {
+                    TreatingDAO::updateByTid($tid,
+                        ['attended' => $row->{'attended'},
+                         'attendee_Info' => json_encode($attendee_Info),
+                         'status' => $row->{'status'}]);
+                }
 
                 $this->success($row);
                 return;
