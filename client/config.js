@@ -3,7 +3,7 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'https://sxyvva1n.qcloud.la';
+var host = 'https://m0tvgk9v.qcloud.la';
 
 var config = {
 
